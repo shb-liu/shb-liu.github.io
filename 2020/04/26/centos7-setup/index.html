@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"shb-liu.me","root":"/","scheme":"Pisces","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="简介近期学完了嵩天老师的Python入门公开课，并完成了相关的案例学习。于是计划找一些项目来练练手。正好听闻目前的公司之前有考虑过建立ERP，但是出于其他原因一直没有实施。而我所在的部门可以说是公司各类数据的中枢，因此如果在我所在的部门通过测验，也就可以更好的推广至全公司。可以提高很多办公效率。 正好公司电脑是一台老旧的台式机。于是考虑用做本地服务器，搭建本地ERP系统。至此决定找寻一款base">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CentOS7 基础设置">
+<meta property="og:url" content="https://shb-liu.me/2020/04/26/centos7-setup/index.html">
+<meta property="og:site_name" content="Shb-Liu&#39;s blog">
+<meta property="og:description" content="简介近期学完了嵩天老师的Python入门公开课，并完成了相关的案例学习。于是计划找一些项目来练练手。正好听闻目前的公司之前有考虑过建立ERP，但是出于其他原因一直没有实施。而我所在的部门可以说是公司各类数据的中枢，因此如果在我所在的部门通过测验，也就可以更好的推广至全公司。可以提高很多办公效率。 正好公司电脑是一台老旧的台式机。于是考虑用做本地服务器，搭建本地ERP系统。至此决定找寻一款base">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-04-26T04:19:35.000Z">
+<meta property="article:modified_time" content="2020-04-26T05:24:23.000Z">
+<meta property="article:author" content="Shb-Liu">
+<meta property="article:tag" content="CentOS7">
+<meta property="article:tag" content="设置">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://shb-liu.me/2020/04/26/centos7-setup/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>CentOS7 基础设置 | Shb-Liu's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Shb-Liu's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shb-liu.me/2020/04/26/centos7-setup/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Shb-Liu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shb-Liu's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CentOS7 基础设置
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-04-26 12:19:35 / 修改时间：13:24:23" itemprop="dateCreated datePublished" datetime="2020-04-26T12:19:35+08:00">2020-04-26</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CentOS7/" itemprop="url" rel="index"><span itemprop="name">CentOS7</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>近期学完了嵩天老师的Python入门公开课，并完成了相关的<a href="https://github.com/shb-liu/icourse163-Python" target="_blank" rel="noopener">案例</a>学习。于是计划找一些项目来练练手。正好听闻目前的公司之前有考虑过建立ERP，但是出于其他原因一直没有实施。而我所在的部门可以说是公司各类数据的中枢，因此如果在我所在的部门通过测验，也就可以更好的推广至全公司。可以提高很多办公效率。</p>
+<p>正好公司电脑是一台老旧的台式机。于是考虑用做本地服务器，搭建本地ERP系统。至此决定找寻一款base Python的开源ERP系统进行了解。对比来，对比去，准备使用<a href="https://erpnext.com/" target="_blank" rel="noopener">ERPNext</a>来上手。</p>
+<a id="more"></a>
+
+<p>接下来记录一些相关内容。</p>
+<h2 id="为什么选择CentOS-7"><a href="#为什么选择CentOS-7" class="headerlink" title="为什么选择CentOS 7"></a>为什么选择CentOS 7</h2><p>在开始之前，要搭建环境，秉承着用新不用旧的理念最开始准备使用CentOS 8来搭建环境。无奈安装后台式机的网卡不能正确驱动，而网卡官网没有提供Kernel 4内核的驱动程序。如果要使用就需要重新编译内核。尝试了2天没有成功，于是放弃。</p>
+<p>在CentOS 8后，又瞄准了Ubuntu，正好24日Ubuntu 20.04发布，于是下载安装。一切顺利，网卡可以正常驱动。还拥有好看的GUI界面。但是使用ERPNext的安装脚本时遇到了不兼容的问题。脚本支持的系统如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">check_distribution_compatibility</span><span class="params">()</span>:</span></span><br><span class="line">	dist_name, dist_version = get_distribution_info()</span><br><span class="line">	supported_dists = &#123;</span><br><span class="line">		<span class="string">'macos'</span>: [<span class="number">10.9</span>, <span class="number">10.10</span>, <span class="number">10.11</span>, <span class="number">10.12</span>],</span><br><span class="line">		<span class="string">'ubuntu'</span>: [<span class="number">14</span>, <span class="number">15</span>, <span class="number">16</span>, <span class="number">18</span>, <span class="number">19</span>],</span><br><span class="line">		<span class="string">'debian'</span>: [<span class="number">8</span>, <span class="number">9</span>],</span><br><span class="line">		<span class="string">'centos'</span>: [<span class="number">7</span>]</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<p>调整后，可以略过版本检测但后续还会有许多其他问题。于是就把目光放到了CentOS 7上。下载Everything版本，GUI安装。一切顺利。发现网卡可以正常识别。</p>
+<p>就是你了，CentOS7。</p>
+<h2 id="基础设置"><a href="#基础设置" class="headerlink" title="基础设置"></a>基础设置</h2><h3 id="双系统引导"><a href="#双系统引导" class="headerlink" title="双系统引导"></a>双系统引导</h3><p>公司电脑安装的是Windows7，按照网上教程安装CentOS 7后，开机没有选择Windows7的选项。解决方法如下：</p>
+<p>修改Centos 7的Grub2引导，添加Windows的启动项 </p>
+<h4 id="终端进入引导设置"><a href="#终端进入引导设置" class="headerlink" title="终端进入引导设置"></a>终端进入引导设置</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vi &#x2F;boot&#x2F;grub2&#x2F;grub.cfg</span><br></pre></td></tr></table></figure>
+
+<h4 id="修改grub-cfg"><a href="#修改grub-cfg" class="headerlink" title="修改grub.cfg"></a>修改<code>grub.cfg</code></h4><p>找到 <code>### BEGIN /etc/grub.d/30_os-prober ###</code> 在后面添加 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">menuentry &quot;Windows7&quot; &#123; </span><br><span class="line">  insmod ntfs </span><br><span class="line">  set root&#x3D;(hd0,1)</span><br><span class="line">  chainloader +1 </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="网卡设置"><a href="#网卡设置" class="headerlink" title="网卡设置"></a>网卡设置</h3><p>安装时可以看到网卡，但是进入GUI后无法使用FireFox上网。打开设置-网络-有线查看IP设置，发现里面没有开启自动连接。考虑到作为局域网ERP服务器，因此决定给其固定IP。设置好后，发现仍然不能上网，后发现是DNS需要配置。解决方法如下：</p>
+<h4 id="终端进入网络设置"><a href="#终端进入网络设置" class="headerlink" title="终端进入网络设置"></a>终端进入网络设置</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim &#x2F;etc&#x2F;resolv.conf</span><br></pre></td></tr></table></figure>
+
+<h4 id="增加如下内容"><a href="#增加如下内容" class="headerlink" title="增加如下内容"></a>增加如下内容</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nameserver 114.114.114.114</span><br><span class="line">nameserver 8.8.8.8</span><br></pre></td></tr></table></figure>
+
+<h3 id="SSH设置"><a href="#SSH设置" class="headerlink" title="SSH设置"></a>SSH设置</h3><p>为了解放公司电脑的显示器，作为分屏用在自己的笔记本上，决定通过SSH在局域网内对公司电脑进行设置。SSH在我所安装的CentOS7内已经安装。</p>
+<h4 id="终端进入SSH设置"><a href="#终端进入SSH设置" class="headerlink" title="终端进入SSH设置"></a>终端进入SSH设置</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim &#x2F;etc&#x2F;ssh&#x2F;sshd_config</span><br></pre></td></tr></table></figure>
+
+<h4 id="对以下内容进行更改："><a href="#对以下内容进行更改：" class="headerlink" title="对以下内容进行更改："></a>对以下内容进行更改：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Port 22 #去掉前面的#</span><br><span class="line">ListenAddress 0.0.0.0 #去掉前面的#</span><br><span class="line">ListenAddress :: #去掉前面的#</span><br><span class="line"></span><br><span class="line">PermitRootLogin yes #去掉前面的#</span><br><span class="line"></span><br><span class="line">PasswordAuthentication yes #去掉前面的#</span><br></pre></td></tr></table></figure>
+
+<h4 id="开启sshd服务"><a href="#开启sshd服务" class="headerlink" title="开启sshd服务"></a>开启sshd服务</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service sshd start</span><br></pre></td></tr></table></figure>
+
+<h3 id="GUI的开启和关闭"><a href="#GUI的开启和关闭" class="headerlink" title="GUI的开启和关闭"></a>GUI的开启和关闭</h3><p>既然使用了SSH，那么开启GUI就是在浪费资源，于是决定关闭GUI，当需要时再开启。</p>
+<h4 id="以命令行模式启动"><a href="#以命令行模式启动" class="headerlink" title="以命令行模式启动"></a>以命令行模式启动</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl set-default multi-user.target</span><br></pre></td></tr></table></figure>
+
+<h4 id="以GUI模式启动"><a href="#以GUI模式启动" class="headerlink" title="以GUI模式启动"></a>以GUI模式启动</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl set-default graphical.target</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>对于我这种小白来说，Linux比Windows难太多，很多设置都需要通过直接调整代码来完成，而不是通过GUI的设置来更改，太抽象。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CentOS7/" rel="tag"># CentOS7</a>
+              <a href="/tags/%E8%AE%BE%E7%BD%AE/" rel="tag"># 设置</a>
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/04/06/github-pages-https/" rel="prev" title="Github Pages自定义域名开启HTTPS">
+      <i class="fa fa-chevron-left"></i> Github Pages自定义域名开启HTTPS
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/05/13/erpnext-build/" rel="next" title="Ubuntu18.04环境下安装ERPNext 12">
+      Ubuntu18.04环境下安装ERPNext 12 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么选择CentOS-7"><span class="nav-number">2.</span> <span class="nav-text">为什么选择CentOS 7</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基础设置"><span class="nav-number">3.</span> <span class="nav-text">基础设置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#双系统引导"><span class="nav-number">3.1.</span> <span class="nav-text">双系统引导</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#终端进入引导设置"><span class="nav-number">3.1.1.</span> <span class="nav-text">终端进入引导设置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#修改grub-cfg"><span class="nav-number">3.1.2.</span> <span class="nav-text">修改grub.cfg</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网卡设置"><span class="nav-number">3.2.</span> <span class="nav-text">网卡设置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#终端进入网络设置"><span class="nav-number">3.2.1.</span> <span class="nav-text">终端进入网络设置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#增加如下内容"><span class="nav-number">3.2.2.</span> <span class="nav-text">增加如下内容</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SSH设置"><span class="nav-number">3.3.</span> <span class="nav-text">SSH设置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#终端进入SSH设置"><span class="nav-number">3.3.1.</span> <span class="nav-text">终端进入SSH设置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对以下内容进行更改："><span class="nav-number">3.3.2.</span> <span class="nav-text">对以下内容进行更改：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#开启sshd服务"><span class="nav-number">3.3.3.</span> <span class="nav-text">开启sshd服务</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GUI的开启和关闭"><span class="nav-number">3.4.</span> <span class="nav-text">GUI的开启和关闭</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#以命令行模式启动"><span class="nav-number">3.4.1.</span> <span class="nav-text">以命令行模式启动</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#以GUI模式启动"><span class="nav-number">3.4.2.</span> <span class="nav-text">以GUI模式启动</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Shb-Liu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/shb-liu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;shb-liu" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Shb-Liu</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.1
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.2
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
